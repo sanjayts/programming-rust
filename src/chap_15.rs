@@ -4,6 +4,22 @@ use std::fmt::Debug;
 use std::path::Path;
 
 #[test]
+fn test_randoms() {
+    let v = gen_randoms(100);
+
+    assert_eq!(v.len(), 100);
+    assert!(v.first().unwrap() >= &0.0);
+}
+
+fn gen_randoms(limit: usize) -> Vec<f64> {
+    std::iter::from_fn(|| {
+
+    })
+    let v: Vec<f64> = Vec::new();
+    v
+}
+
+#[test]
 fn test_generic_dump() {
     dump(vec!["hi", "hello", "bye"]);
 }
