@@ -1,14 +1,15 @@
 use crate::chap_15::BinaryTree::NonEmpty;
 use num::{Complex, Zero};
 use rand::random;
-use std::cmp::{max, min};
+use std::cmp::max;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::error::Error;
 use std::ffi::OsStr;
+
 use std::fmt::Debug;
-use std::io::BufRead;
-use std::iter::{from_fn, once, repeat, successors, zip, Cycle, Peekable};
-use std::path::{Iter, Path};
+
+use std::iter::{from_fn, once, Peekable};
+use std::path::Path;
 use std::str::FromStr;
 
 #[test]
@@ -278,8 +279,8 @@ fn test_sum_product() {
 
 #[test]
 fn test_fizzbuzz() {
-    let fizzes = repeat("").take(2).chain(once("fizz")).cycle();
-    let buzzes = repeat("").take(4).chain(once("buzz")).cycle();
+    let fizzes = std::iter::repeat("").take(2).chain(once("fizz")).cycle();
+    let buzzes = std::iter::repeat("").take(4).chain(once("buzz")).cycle();
     let fb_zip = fizzes.zip(buzzes);
     let fizz_buzz = (1..100).zip(fb_zip).map(|tuple| match tuple {
         (i, ("", "")) => i.to_string(),
@@ -352,7 +353,7 @@ fn test_zip() {
     assert_eq!(pairs, vec![(0, "a"), (1, "b"), (2, "c")]);
 
     let numbers = vec![1, 2, 3];
-    let pairs = repeat("take").zip(numbers).collect::<Vec<_>>();
+    let pairs = std::iter::repeat("take").zip(numbers).collect::<Vec<_>>();
     assert_eq!(pairs, vec![("take", 1), ("take", 2), ("take", 3)]);
 }
 

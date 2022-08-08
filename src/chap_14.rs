@@ -1,8 +1,4 @@
 use std::collections::HashMap;
-use std::hash::Hash;
-use std::io::Read;
-use std::thread;
-use std::thread::JoinHandle;
 
 #[test]
 fn test_fn_ptr() {
