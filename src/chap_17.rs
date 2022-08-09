@@ -1,6 +1,9 @@
 use regex::Regex;
 use std::borrow::Cow;
+use std::collections::hash_map::DefaultHasher;
 use std::fmt::{Display, Formatter, Write};
+use std::hash::{Hash, Hasher};
+use std::ptr::hash;
 use std::rc::Rc;
 use std::str::FromStr;
 
@@ -171,14 +174,30 @@ fn test_keyword_args_format() {
     assert_eq!(s, "Caramel Latte....... 2 @ 4.99");
 }
 
+use lazy_static::lazy_static;
+use unicode_normalization::UnicodeNormalization;
+
+lazy_static! {
+    static ref SEMVER: Regex = Regex::new(
+        r#"(?x)
+                (\d+)   # major version
+                \.
+                (\d+)   # minor version
+                \.
+                (\d+)   # patch version
+                (-[[:alnum:]-.]*)?  # extra info
+                "#
+    )
+    .expect("Error parsing regex");
+}
+
 #[test]
 fn test_basic_regex() {
-    let semver = Regex::new(r"(\d+)\.(\d+)\.(\d+)(-[[:alphanum:]-.]*)?").unwrap();
     let version = r#"regex = "1.5.2-alpha""#;
 
-    assert!(semver.is_match(version));
+    assert!(SEMVER.is_match(version));
 
-    let captures = semver.captures(version).unwrap();
+    let captures = SEMVER.captures(version).unwrap();
     assert_eq!(&captures[0], "1.5.2-alpha");
     assert_eq!(&captures[1], "1");
     assert_eq!(&captures[2], "5");
@@ -192,10 +211,30 @@ fn test_basic_regex() {
 
     let text = "We started with 1.0.0-alpha then moved on to \
     1.0.0 which was our major release. Then we started working towards 1.1.0-beta";
-    let matches = semver
+    let matches = SEMVER
         .find_iter(text)
-        .inspect(|m| println!("{:?}", m))
         .map(|m| m.as_str())
         .collect::<Vec<_>>();
     assert_eq!(matches, vec!["1.0.0-alpha", "1.0.0", "1.1.0-beta"]);
+}
+
+#[test]
+fn test_unicode() {
+    let composed = "th\u{e9}";
+    let decomposed = "the\u{301}";
+    assert_ne!(composed, decomposed);
+    assert!(composed > decomposed);
+
+    assert_eq!(hash_string(composed), 6044622843544723443);
+    assert_eq!(hash_string(decomposed), 10437153643056759108);
+
+    let pho = "Phở"; // uses the 3-char representation
+    assert_eq!(pho.nfd().collect::<String>(), "Pho\u{31b}\u{309}");
+    assert_eq!(pho.nfc().collect::<String>(), "Ph\u{1edf}");
+}
+
+fn hash_string<S: ?Sized + Hash>(s: &S) -> u64 {
+    let mut hasher = DefaultHasher::new();
+    s.hash(&mut hasher);
+    hasher.finish()
 }
