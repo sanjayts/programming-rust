@@ -13,3 +13,5 @@ num = "0.4.0"
 regex = "1"
 lazy_static = "1"
 unicode-normalization = "0.1.21"
+time = "0.3"
+reqwest = { version = "0.11.11", features = [ "blocking" ] }
