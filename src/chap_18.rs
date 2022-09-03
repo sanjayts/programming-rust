@@ -1,10 +1,11 @@
-use std::ffi::{OsStr, OsString};
-use std::fs::{read_dir, File, FileType, OpenOptions};
+use std::ffi::OsStr;
+use std::fs::{File, OpenOptions};
 use std::io::ErrorKind::Interrupted;
-use std::io::{self, stdout, BufRead, BufReader, Cursor, Read, Stdout, Write};
+use std::io::{self, BufRead, BufReader, Cursor, Read, Write};
 use std::path::Path;
 use std::process::Command;
-use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+use std::time::UNIX_EPOCH;
+use time::Duration;
 
 #[test]
 fn test_copy() {

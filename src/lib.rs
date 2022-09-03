@@ -1,3 +1,6 @@
+#![allow(unused)]
+// ^ To filter out false unused import warnings given out by IntelliJ
+
 pub mod chap_11;
 pub mod chap_12;
 pub mod chap_13;
@@ -7,4 +10,5 @@ pub mod chap_16;
 pub mod chap_17;
 pub mod chap_18;
 pub mod chap_19;
+pub mod chap_21;
 pub mod json_lib;

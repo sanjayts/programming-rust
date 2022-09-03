@@ -76,12 +76,12 @@ fn block_on<F: Future>(future: F) -> F::Output {
         match future.as_mut().poll(&mut context) {
             Poll::Ready(value) => {
                 println!("Value ready -- returning");
-                return value
-            },
+                return value;
+            }
             Poll::Pending => {
                 println!("Value not ready -- parking the thread");
                 parker.park()
-            },
+            }
         }
     }
 }

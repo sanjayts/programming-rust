@@ -3,7 +3,6 @@ use std::borrow::Cow;
 use std::collections::hash_map::DefaultHasher;
 use std::fmt::{Display, Formatter, Write};
 use std::hash::{Hash, Hasher};
-use std::ptr::hash;
 use std::rc::Rc;
 use std::str::FromStr;
 

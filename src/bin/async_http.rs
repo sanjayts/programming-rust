@@ -1,9 +1,8 @@
 use async_std::io;
 use async_std::io::{ReadExt, WriteExt};
 use async_std::net::TcpStream;
-use core::time::Duration;
+
 use std::net::Shutdown;
-use std::thread;
 
 #[async_std::main]
 async fn main() {
